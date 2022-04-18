@@ -7,6 +7,10 @@
 	th:href="@{bootstrap.min.css}" />
 </head>
 <body>
+<div th:if="${param.error}">
+ Invalid username and password.
+</div>
+
 	<h1>Books</h1>
 	<table class="table table-striped">
 		<tr>
@@ -24,8 +28,10 @@
 			<td th:text="${books.isbn}"></td>
 			<td th:text="${books.year}"></td>
 			<td th:text="${books.price}"></td>
-			<td> <a th:href="@{/delete/{id}(id=${books.id})}" class="btn btn-danger">Delete</a> </td>
-			<td> <a th:href="@{/edit/{id}(id=${books.id})}" class="btn btn-primary">Edit</a> </td>
+				<td sec:authorize="hasRole('ADMIN')">
+			 <a th:href="@{/delete/{id}(id=${books.id})}" class="btn btn-danger">Delete</a> </td>
+			 <td sec:authorize="hasRole('ADMIN')">
+			 <a th:href="@{/edit/{id}(id=${books.id})}" class="btn btn-primary">Edit</a> </td>
 			
 
 
@@ -33,5 +39,8 @@
 
 	</table>
 	<a href="/add" class="btn btn-success" >Add Book</a>
+	<form th:action="@{/logout}" method="post">
+				<input type="submit" value="Sign Out" class="btn btn-sm btn-danger" />
+			</form>
 </body>
 </html>
